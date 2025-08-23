@@ -378,6 +378,7 @@ _Связки клавиш_
 | `` w `` | Закоммитить изменения без предварительного хука коммита |  |
 | `` A `` | Правка последнего коммита |  |
 | `` C `` | Сохранить изменения с помощью редактора git |  |
+| `` <c-g> `` | Commit with LLM-generated message | Generate commit message using configured LLM command |
 | `` <c-f> `` | Find base commit for fixup | Find the commit that your current changes are building upon, for the sake of amending/fixing up the commit. This spares you from having to look through your branch's commits one-by-one to see which commit should be amended/fixed up. See docs: <https://github.com/jesseduffield/lazygit/tree/master/docs/Fixup_Commits.md> |
 | `` e `` | Edit | Open file in external editor. |
 | `` o `` | Открыть файл | Open file in default application. |

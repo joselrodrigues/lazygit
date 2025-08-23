@@ -21,6 +21,8 @@ type UserConfig struct {
 	QuitOnTopLevelReturn bool `yaml:"quitOnTopLevelReturn"`
 	// Config relating to things outside of Lazygit like how files are opened, copying to clipboard, etc
 	OS OSConfig `yaml:"os,omitempty"`
+	// Config for LLM-based commit message generation
+	LLM LLMConfig `yaml:"llm,omitempty"`
 	// If true, don't display introductory popups upon opening Lazygit.
 	DisableStartupPopups bool `yaml:"disableStartupPopups"`
 	// User-configured commands that can be invoked from within Lazygit
@@ -501,6 +503,7 @@ type KeybindingStatusConfig struct {
 type KeybindingFilesConfig struct {
 	CommitChanges            string `yaml:"commitChanges"`
 	CommitChangesWithoutHook string `yaml:"commitChangesWithoutHook"`
+	CommitChangesWithLLM     string `yaml:"commitChangesWithLLM"`
 	AmendLastCommit          string `yaml:"amendLastCommit"`
 	CommitChangesWithEditor  string `yaml:"commitChangesWithEditor"`
 	FindBaseCommitForFixup   string `yaml:"findBaseCommitForFixup"`
@@ -604,7 +607,23 @@ type KeybindingCommitMessageConfig struct {
 	CommitMenu string `yaml:"commitMenu"`
 }
 
+// LLMConfig contains configuration for LLM-based commit message generation
+type LLMConfig struct {
+	// Enabled controls whether LLM commit message generation is available.
+	// When false, the keybinding will not appear in the UI.
+	Enabled bool `yaml:"enabled"`
+	
+	// Command specifies the external command to execute for generating commit messages.
+	// The command should analyze staged changes (using git diff --cached) and output
+	// a properly formatted commit message to stdout. Examples:
+	// - "python3 /path/to/llm_commit_generator.py"
+	// - "curl -s $API_URL -d @- | jq -r .message"
+	// - "/usr/local/bin/my-commit-script.sh"
+	Command string `yaml:"command"`
+}
+
 // OSConfig contains config on the level of the os
+
 type OSConfig struct {
 	// Command for editing a file. Should contain "{{filename}}".
 	Edit string `yaml:"edit,omitempty"`
@@ -868,6 +887,10 @@ func GetDefaultConfig() *UserConfig {
 		ConfirmOnQuit:                false,
 		QuitOnTopLevelReturn:         false,
 		OS:                           OSConfig{},
+		LLM: LLMConfig{
+			Enabled: false,
+			Command: "",
+		},
 		DisableStartupPopups:         false,
 		CustomCommands:               []CustomCommand(nil),
 		Services:                     map[string]string(nil),
@@ -961,6 +984,7 @@ func GetDefaultConfig() *UserConfig {
 			Files: KeybindingFilesConfig{
 				CommitChanges:            "c",
 				CommitChangesWithoutHook: "w",
+				CommitChangesWithLLM:     "<c-g>",
 				AmendLastCommit:          "A",
 				CommitChangesWithEditor:  "C",
 				FindBaseCommitForFixup:   "<c-f>",

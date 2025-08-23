@@ -65,6 +65,7 @@ _Legend: `<c-b>` means ctrl+b, `<a-b>` means alt+b, `B` means shift+b_
 | `` w `` | Fazer commit de alterações sem pré-commit |  |
 | `` A `` | Alterar último commit |  |
 | `` C `` | Enviar alteração usando um editor Git |  |
+| `` <c-g> `` | Commit com mensagem gerada por LLM | Gerar mensagem de commit usando comando LLM configurado |
 | `` <c-f> `` | Encontrar commit da base para consertar | Encontre o commit em que as suas mudanças atuais estão se baseando, para alterar/consertar o commit. Isso poupa-te você de ter que olhar pelos commits da sua branch um por um para ver qual commit deve ser alterado/consertado<br>Veja a documentação:<br><https://github.com/jesseduffield/lazygit/tree/master/docs/Fixup_Commits.md> |
 | `` e `` | Editar | Abrir arquivo no editor externo. |
 | `` o `` | Abrir arquivo | Abrir arquivo no aplicativo padrão. |

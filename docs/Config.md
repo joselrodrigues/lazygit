@@ -551,6 +551,20 @@ os:
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#using-aliases-or-functions-in-shell-commands
   shellFunctionsFile: ""
 
+# Config for LLM-based commit message generation
+llm:
+  # Enabled controls whether LLM commit message generation is available.
+  # When false, the keybinding will not appear in the UI.
+  enabled: false
+
+  # Command specifies the external command to execute for generating commit messages.
+  # The command should analyze staged changes (using git diff --cached) and output
+  # a properly formatted commit message to stdout. Examples:
+  # - "python3 /path/to/llm_commit_generator.py"
+  # - "curl -s $API_URL -d @- | jq -r .message"
+  # - "/usr/local/bin/my-commit-script.sh"
+  command: ""
+
 # If true, don't display introductory popups upon opening Lazygit.
 disableStartupPopups: false
 
@@ -669,6 +683,7 @@ keybinding:
   files:
     commitChanges: c
     commitChangesWithoutHook: w
+    commitChangesWithLLM: <c-g>
     amendLastCommit: A
     commitChangesWithEditor: C
     findBaseCommitForFixup: <c-f>

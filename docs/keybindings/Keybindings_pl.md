@@ -239,6 +239,7 @@ _Legenda: `<c-b>` oznacza ctrl+b, `<a-b>` oznacza alt+b, `B` oznacza shift+b_
 | `` w `` | Zatwierdź zmiany bez hooka pre-commit |  |
 | `` A `` | Popraw ostatni commit |  |
 | `` C `` | Zatwierdź zmiany używając edytora git |  |
+| `` <c-g> `` | Commit with LLM-generated message | Generate commit message using configured LLM command |
 | `` <c-f> `` | Znajdź bazowy commit do poprawki | Znajdź commit, na którym opierają się Twoje obecne zmiany, w celu poprawienia/zmiany commita. To pozwala Ci uniknąć przeglądania commitów w Twojej gałęzi jeden po drugim, aby zobaczyć, który commit powinien być poprawiony/zmieniony. Zobacz dokumentację: <https://github.com/jesseduffield/lazygit/tree/master/docs/Fixup_Commits.md> |
 | `` e `` | Edytuj | Otwórz plik w zewnętrznym edytorze. |
 | `` o `` | Otwórz plik | Otwórz plik w domyślnej aplikacji. |

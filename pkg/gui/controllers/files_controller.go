@@ -83,6 +83,13 @@ func (self *FilesController) GetKeybindings(opts types.KeybindingsOpts) []*types
 			Description: self.c.Tr.CommitChangesWithEditor,
 		},
 		{
+			Key:               opts.GetKey(opts.Config.Files.CommitChangesWithLLM),
+			Handler:           self.c.Helpers().WorkingTree.HandleLLMCommitPress,
+			Description:       self.c.Tr.CommitChangesWithLLM,
+			Tooltip:           self.c.Tr.CommitChangesWithLLMTooltip,
+			GetDisabledReason: self.require(self.llmEnabled),
+		},
+		{
 			Key:         opts.GetKey(opts.Config.Files.FindBaseCommitForFixup),
 			Handler:     self.c.Helpers().FixupHelper.HandleFindBaseCommitForFixupPress,
 			Description: self.c.Tr.FindBaseCommitForFixup,
@@ -216,6 +223,19 @@ func (self *FilesController) withFileTreeViewModelMutex(callback func() *types.D
 
 		return callback()
 	}
+}
+
+// llmEnabled checks if LLM commit generation is properly configured.
+// Returns a DisabledReason with localized text if LLM is not available,
+// otherwise returns nil to indicate the feature is enabled.
+func (self *FilesController) llmEnabled() *types.DisabledReason {
+	if !self.c.UserConfig().LLM.Enabled {
+		return &types.DisabledReason{Text: self.c.Tr.LLMDisabled}
+	}
+	if self.c.UserConfig().LLM.Command == "" {
+		return &types.DisabledReason{Text: self.c.Tr.LLMCommandNotConfigured}
+	}
+	return nil
 }
 
 func (self *FilesController) GetMouseKeybindings(opts types.KeybindingsOpts) []*gocui.ViewMouseBinding {

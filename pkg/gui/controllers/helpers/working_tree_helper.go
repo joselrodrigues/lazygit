@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/jesseduffield/gocui"
 	"github.com/jesseduffield/lazygit/pkg/commands/git_commands"
 	"github.com/jesseduffield/lazygit/pkg/commands/models"
 	"github.com/jesseduffield/lazygit/pkg/config"
@@ -22,6 +23,7 @@ type WorkingTreeHelper struct {
 	commitsHelper        *CommitsHelper
 	gpgHelper            *GpgHelper
 	mergeAndRebaseHelper *MergeAndRebaseHelper
+	llmHelper            *LLMHelper
 }
 
 func NewWorkingTreeHelper(
@@ -30,6 +32,7 @@ func NewWorkingTreeHelper(
 	commitsHelper *CommitsHelper,
 	gpgHelper *GpgHelper,
 	mergeAndRebaseHelper *MergeAndRebaseHelper,
+	llmHelper *LLMHelper,
 ) *WorkingTreeHelper {
 	return &WorkingTreeHelper{
 		c:                    c,
@@ -37,6 +40,7 @@ func NewWorkingTreeHelper(
 		commitsHelper:        commitsHelper,
 		gpgHelper:            gpgHelper,
 		mergeAndRebaseHelper: mergeAndRebaseHelper,
+		llmHelper:            llmHelper,
 	}
 }
 
@@ -268,6 +272,40 @@ func (self *WorkingTreeHelper) prepareFilesForCommit() error {
 	}
 
 	return nil
+}
+
+// HandleLLMCommitPress generates a commit message using LLM and opens the commit panel
+func (self *WorkingTreeHelper) HandleLLMCommitPress() error {
+	return self.WithEnsureCommittableFiles(func() error {
+		return self.c.WithWaitingStatus(self.c.Tr.GeneratingCommitMessageStatus, func(gocui.Task) error {
+			// Use injected LLM helper to generate message
+			generatedMessage, err := self.llmHelper.GenerateCommitMessage()
+			
+			if err != nil {
+				return err
+			}
+
+			// Open commit message panel with generated message
+			self.commitsHelper.OpenCommitMessagePanel(
+				&OpenCommitMessagePanelOpts{
+					CommitIndex:      context.NoCommitIndex,
+					InitialMessage:   generatedMessage,
+					SummaryTitle:     self.c.Tr.CommitSummaryTitle,
+					DescriptionTitle: self.c.Tr.CommitDescriptionTitle,
+					PreserveMessage:  true,
+					OnConfirm: func(summary string, description string) error {
+						return self.handleCommit(summary, description, false)
+					},
+					OnSwitchToEditor: func(filepath string) error {
+						return self.switchFromCommitMessagePanelToEditor(filepath, false)
+					},
+					ForceSkipHooks:  false,
+					SkipHooksPrefix: self.c.UserConfig().Git.SkipHookPrefix,
+				},
+			)
+			return nil
+		})
+	})
 }
 
 func (self *WorkingTreeHelper) commitPrefixConfigsForRepo() []config.CommitPrefixConfig {

@@ -35,6 +35,11 @@ type TranslationSet struct {
 	PassUnameWrong                        string
 	Commit                                string
 	CommitTooltip                         string
+	CommitChangesWithLLM                  string
+	CommitChangesWithLLMTooltip           string
+	LLMDisabled                          string
+	LLMCommandNotConfigured              string
+	GeneratingCommitMessageStatus        string
 	AmendLastCommit                       string
 	AmendLastCommitTitle                  string
 	SureToAmend                           string
@@ -975,6 +980,7 @@ type Actions struct {
 	AddCommitCoAuthor                string
 	RevertCommit                     string
 	CreateFixupCommit                string
+	GenerateCommitMessage            string
 	SquashAllAboveFixupCommits       string
 	MoveCommitUp                     string
 	MoveCommitDown                   string
@@ -1130,6 +1136,11 @@ func EnglishTranslationSet() *TranslationSet {
 		PassUnameWrong:                       "Password, passphrase and/or username wrong",
 		Commit:                               "Commit",
 		CommitTooltip:                        "Commit staged changes.",
+		CommitChangesWithLLM:                 "Commit with LLM-generated message",
+		CommitChangesWithLLMTooltip:          "Generate commit message using configured LLM command",
+		LLMDisabled:                          "LLM commit generation is disabled in config",
+		LLMCommandNotConfigured:              "LLM command is not configured",
+		GeneratingCommitMessageStatus:        "Generating commit message...",
 		AmendLastCommit:                      "Amend last commit",
 		AmendLastCommitTitle:                 "Amend last commit",
 		SureToAmend:                          "Are you sure you want to amend last commit? Afterwards, you can change the commit message from the commits panel.",
@@ -2034,6 +2045,7 @@ func EnglishTranslationSet() *TranslationSet {
 			AddCommitCoAuthor:                "Add commit co-author",
 			RevertCommit:                     "Revert commit",
 			CreateFixupCommit:                "Create fixup commit",
+			GenerateCommitMessage:            "Generate LLM commit message",
 			SquashAllAboveFixupCommits:       "Squash all above fixup commits",
 			CreateLightweightTag:             "Create lightweight tag",
 			CreateAnnotatedTag:               "Create annotated tag",

@@ -384,6 +384,7 @@ _Legend: `<c-b>` means ctrl+b, `<a-b>` means alt+b, `B` means shift+b_
 | `` w `` | Commit changes without pre-commit hook |  |
 | `` A `` | 마지맛 커밋 수정 |  |
 | `` C `` | Git 편집기를 사용하여 변경 내용을 커밋합니다. |  |
+| `` <c-g> `` | Commit with LLM-generated message | Generate commit message using configured LLM command |
 | `` <c-f> `` | Find base commit for fixup | Find the commit that your current changes are building upon, for the sake of amending/fixing up the commit. This spares you from having to look through your branch's commits one-by-one to see which commit should be amended/fixed up. See docs: <https://github.com/jesseduffield/lazygit/tree/master/docs/Fixup_Commits.md> |
 | `` e `` | Edit | Open file in external editor. |
 | `` o `` | 파일 닫기 | Open file in default application. |

@@ -1083,6 +1083,10 @@
           "type": "string",
           "default": "w"
         },
+        "commitChangesWithLLM": {
+          "type": "string",
+          "default": "\u003cc-g\u003e"
+        },
         "amendLastCommit": {
           "type": "string",
           "default": "A"
@@ -1558,6 +1562,22 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "LLMConfig": {
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enabled controls whether LLM commit message generation is available.\nWhen false, the keybinding will not appear in the UI.",
+          "default": false
+        },
+        "command": {
+          "type": "string",
+          "description": "Command specifies the external command to execute for generating commit messages.\nThe command should analyze staged changes (using git diff --cached) and output\na properly formatted commit message to stdout. Examples:\n- \"python3 /path/to/llm_commit_generator.py\"\n- \"curl -s $API_URL -d @- | jq -r .message\"\n- \"/usr/local/bin/my-commit-script.sh\""
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Config for LLM-based commit message generation"
+    },
     "LogConfig": {
       "properties": {
         "order": {
@@ -1958,6 +1978,10 @@
         "os": {
           "$ref": "#/$defs/OSConfig",
           "description": "Config relating to things outside of Lazygit like how files are opened, copying to clipboard, etc"
+        },
+        "llm": {
+          "$ref": "#/$defs/LLMConfig",
+          "description": "Config for LLM-based commit message generation"
         },
         "disableStartupPopups": {
           "type": "boolean",

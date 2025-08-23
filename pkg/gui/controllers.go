@@ -53,6 +53,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 	)
 
 	gpgHelper := helpers.NewGpgHelper(helperCommon)
+	llmHelper := helpers.NewLLMHelper(helperCommon)
 	viewHelper := helpers.NewViewHelper(helperCommon, gui.State.Contexts)
 	patchBuildingHelper := helpers.NewPatchBuildingHelper(helperCommon)
 	stagingHelper := helpers.NewStagingHelper(helperCommon)
@@ -98,7 +99,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 		Bisect:          bisectHelper,
 		Suggestions:     suggestionsHelper,
 		Files:           helpers.NewFilesHelper(helperCommon),
-		WorkingTree:     helpers.NewWorkingTreeHelper(helperCommon, refsHelper, commitsHelper, gpgHelper, rebaseHelper),
+		WorkingTree:     helpers.NewWorkingTreeHelper(helperCommon, refsHelper, commitsHelper, gpgHelper, rebaseHelper, llmHelper),
 		Tags:            helpers.NewTagsHelper(helperCommon, commitsHelper, gpgHelper),
 		BranchesHelper:  helpers.NewBranchesHelper(helperCommon, worktreeHelper),
 		GPG:             helpers.NewGpgHelper(helperCommon),
@@ -109,6 +110,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 		AmendHelper:     helpers.NewAmendHelper(helperCommon, gpgHelper),
 		FixupHelper:     helpers.NewFixupHelper(helperCommon),
 		Commits:         commitsHelper,
+		LLM:             llmHelper,
 		SuspendResume:   helpers.NewSuspendResumeHelper(helperCommon),
 		Snake:           helpers.NewSnakeHelper(helperCommon),
 		Diff:            diffHelper,
